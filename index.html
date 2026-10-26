@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>WALLYZA — Premium Wallpapers</title>
+<style>
+:root{--bg:#090909;--panel:#141414;--gold:#d9b66c;--white:#f8f5ee;--muted:#aaa69b;--line:#292720}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}
+header{padding:22px 6%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:28px;font-weight:900;letter-spacing:5px;color:var(--gold);text-decoration:none}
+.logo span{color:white}
+.tagline{font-size:11px;letter-spacing:2px;color:var(--muted)}
+main{max-width:1450px;margin:auto;padding:35px 6% 65px}
+.hero{padding:35px 0}
+.eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);text-transform:uppercase}
+h1{font-size:clamp(38px,6vw,68px);line-height:1.05;margin:16px 0}
+h1 em{color:var(--gold);font-style:normal}
+.hero p{color:var(--muted);line-height:1.7;max-width:560px}
+.search{display:flex;gap:10px;margin-top:25px;max-width:720px}
+input{min-width:0;flex:1;background:#151515;border:1px solid #39352b;border-radius:10px;padding:16px;color:white;outline:none}
+input:focus{border-color:var(--gold)}
+button{cursor:pointer;font:inherit}
+.gold{border:0;background:var(--gold);color:#15120a;font-weight:bold;border-radius:10px;padding:14px 19px}
+.gold:hover{background:#f1d79d}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 20px}
+h2{font-size:23px;margin:0}
+.muted{font-size:12px;color:var(--muted)}
+.categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.category{background:linear-gradient(135deg,#1b1914,#101010);color:white;border:1px solid var(--line);border-radius:15px;text-align:left;padding:25px;min-height:160px;transition:.2s}
+.category:hover{border-color:var(--gold);transform:translateY(-3px)}
+.category .num{color:var(--gold);font-size:12px;letter-spacing:3px}
+.category h3{font-size:25px;margin:26px 0 8px}
+.category p{font-size:13px;color:var(--muted);margin:0}
+.category .arrow{float:right;color:var(--gold);font-size:22px}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;min-width:0}
+.card img{display:block;width:100%;height:250px;object-fit:cover;background:#1b1b1b}
+.card-info{padding:13px}
+.card-title{font-size:13px;line-height:1.5;overflow-wrap:anywhere;margin-bottom:8px}
+.license{font-size:11px;color:var(--muted);margin-bottom:12px}
+.actions{display:flex;gap:8px}
+.actions button,.actions a{flex:1;text-align:center;text-decoration:none;font-size:12px;padding:10px 6px;border-radius:7px}
+.download{background:var(--gold);border:0;color:#17130a;font-weight:bold}
+.source{background:#252525;color:white;border:1px solid #383838}
+.status{color:var(--muted);line-height:1.7;padding:20px 0}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:30px 0 10px}
+.secondary{background:#171717;color:var(--gold);border:1px solid var(--line);border-radius:9px;padding:11px 15px}
+.hidden{display:none!important}
+footer{border-top:1px solid var(--line);padding:25px 6%;text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
+footer strong{color:var(--gold)}
+@media(max-width:800px){.categories,.results{grid-template-columns:repeat(2,minmax(0,1fr))}.card img{height:210px}}
+@media(max-width:500px){header{padding:18px 5%}.tagline{display:none}main{padding:25px 5% 50px}.categories,.results{grid-template-columns:1fr}.category{min-height:130px;padding:20px}.category h3{margin-top:18px}.card img{height:260px}.search{flex-direction:column}.gold{width:100%}}
+</style>
+</head>
+<body>
+<header>
+<a class="logo" href="#" id="logo">WALLY<span>ZA</span></a>
+<div class="tagline">YOUR WALLPAPER UNIVERSE</div>
+</header>
+
+<main>
+<section class="hero">
+<div class="eyebrow">A world of wallpapers</div>
+<h1>Your screen.<br><em>Your style.</em></h1>
+<p>Discover stunning vehicles, iconic buildings, beautiful landscapes and incredible aircraft. Find a wallpaper you love and download it.</p>
+<form class="search" id="searchForm">
+<input id="searchInput" placeholder="Search BMW, Ferrari, mountains..." aria-label="Search wallpapers">
+<button class="gold" type="submit">Search ↗</button>
+</form>
+</section>
+
+<section id="home">
+<div class="heading"><h2>Explore collections</h2><span class="muted">Choose a category</span></div>
+<div class="categories" id="categories"></div>
+</section>
+
+<section id="gallery" class="hidden">
+<div class="toolbar">
+<div><h2 id="galleryTitle">Wallpapers</h2><div class="muted">Real image results</div></div>
+<button class="secondary" id="back">← Categories</button>
+</div>
+<div id="status" class="status" aria-live="polite"></div>
+<div class="results" id="results"></div>
+<div style="text-align:center;margin-top:25px">
+<button id="more" class="gold hidden">Load more wallpapers ↓</button>
+</div>
+</section>
+</main>
+
+<footer><strong>WALLYZA</strong> — Your screen, your style.<br>Images come from Wikimedia Commons. Check the source page for each image's license and attribution requirements.</footer>
+
+<script>
+const collections=[
+{name:"Cars",desc:"Luxury, supercars & legends",query:"sports car"},
+{name:"Bikes",desc:"Motorcycles built to thrill",query:"sport motorcycle"},
+{name:"Architecture",desc:"Beautiful buildings & design",query:"modern architecture"},
+{name:"Skyscrapers",desc:"Iconic towers & city skylines",query:"skyscraper skyline"},
+{name:"Nature",desc:"Mountains, oceans & wild places",query:"nature landscape"},
+{name:"Planes",desc:"Aircraft & aviation",query:"airplane in flight"}
+];
+
+const categories=document.getElementById("categories");
+const home=document.getElementById("home");
+const gallery=document.getElementById("gallery");
+const results=document.getElementById("results");
+const statusBox=document.getElementById("status");
+const moreButton=document.getElementById("more");
+
+let activeQuery="";
+let offset=0;
+let requestNumber=0;
+let loadedFiles=new Set();
+
+categories.innerHTML=collections.map((c,i)=>`
+<button class="category" data-index="${i}">
+<span class="num">0${i+1} / COLLECTION</span><span class="arrow">↗</span>
+<h3>${c.name}</h3><p>${c.desc}</p>
+</button>`).join("");
+
+categories.querySelectorAll("button").forEach(button=>{
+button.addEventListener("click",()=>{
+const c=collections[Number(button.dataset.index)];
+startSearch(c.query,c.name);
+});
+});
+
+document.getElementById("logo").addEventListener("click",e=>{
+e.preventDefault();
+requestNumber++;
+gallery.classList.add("hidden");
+home.classList.remove("hidden");
+document.getElementById("searchInput").value="";
+window.scrollTo({top:0,behavior:"smooth"});
+});
+
+document.getElementById("back").addEventListener("click",()=>{
+requestNumber++;
+gallery.classList.add("hidden");
+home.classList.remove("hidden");
+window.scrollTo({top:0,behavior:"smooth"});
+});
+
+document.getElementById("searchForm").addEventListener("submit",e=>{
+e.preventDefault();
+const q=document.getElementById("searchInput").value.trim();
+if(q)startSearch(q,q);
+});
+
+function safe(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function startSearch(query,title){
+activeQuery=query;
+offset=0;
+loadedFiles=new Set();
+results.innerHTML="";
+home.classList.add("hidden");
+gallery.classList.remove("hidden");
+document.getElementById("galleryTitle").textContent=title;
+moreButton.classList.add("hidden");
+window.scrollTo({top:0,behavior:"smooth"});
+loadImages();
+}
+
+async function loadImages(){
+const thisRequest=++requestNumber;
+statusBox.classList.remove("error");
+statusBox.textContent="Finding real images for "+activeQuery+"…";
+moreButton.disabled=true;
+moreButton.textContent="Loading…";
+
+const url=new URL("https://commons.wikimedia.org/w/api.php");
+url.search=new URLSearchParams({
+action:"query",
+generator:"search",
+gsrsearch:activeQuery+" filetype:bitmap",
+gsrnamespace:"6",
+gsrlimit:"30",
+gsroffset:String(offset),
+prop:"imageinfo",
+iiprop:"url|extmetadata",
+iiurlwidth:"1000",
+format:"json",
+origin:"*"
+}).toString();
+
+try{
+const response=await fetch(url);
+if(!response.ok)throw new Error("Image service unavailable");
+const data=await response.json();
+if(thisRequest!==requestNumber)return;
+
+const pages=Object.values(data.query?.pages||{});
+const images=pages.filter(p=>p.imageinfo?.[0]?.thumburl&&p.imageinfo?.[0]?.url)
+.filter(p=>!loadedFiles.has(p.title));
+
+images.forEach(p=>loadedFiles.add(p.title));
+offset+=30;
+
+if(!images.length){
+statusBox.textContent=offset===30
+?"No images found for this search. Try another search term."
+:"No more new images were found. Try a different search.";
+moreButton.classList.add("hidden");
+return;
+}
+
+statusBox.textContent=loadedFiles.size+" wallpapers found for “"+activeQuery+"”.";
+results.insertAdjacentHTML("beforeend",images.map((p,i)=>{
+const info=p.imageinfo[0];
+const filename=p.title.replace(/^File:/,"");
+const license=info.extmetadata?.LicenseShortName?.value||"Check license";
+const author=info.extmetadata?.Artist?.value||"";
+return `<article class="card">
+<a href="${safe(info.descriptionurl||info.url)}" target="_blank" rel="noopener noreferrer">
+<img src="${safe(info.thumburl)}" alt="${safe(filename)}" loading="lazy">
+</a>
+<div class="card-info">
+<div class="card-title">${safe(filename)}</div>
+<div class="license">${safe([author,license].filter(Boolean).join(" · "))}</div>
+<div class="actions">
+<button class="download" data-url="${safe(info.url)}" data-name="${safe(filename)}">↓ Download</button>
+<a class="source" href="${safe(info.descriptionurl||info.url)}" target="_blank" rel="noopener noreferrer">Source</a>
+</div>
+</div></article>`;
+}).join(""));
+
+moreButton.classList.remove("hidden");
+moreButton.disabled=false;
+moreButton.textContent="Load more wallpapers ↓";
+
+}catch(error){
+if(thisRequest!==requestNumber)return;
+statusBox.classList.add("error");
+statusBox.textContent="Could not load wallpapers. Check your internet connection and try again.";
+moreButton.classList.add("hidden");
+}
+}
+
+moreButton.addEventListener("click",loadImages);
+
+results.addEventListener("click",async e=>{
+const button=e.target.closest("[data-url]");
+if(!button)return;
+const url=button.dataset.url;
+const filename=button.dataset.name.replace(/[\\/:*?"<>|]/g,"_");
+button.disabled=true;
+button.textContent="Preparing…";
+try{
+const response=await fetch(url);
+if(!response.ok)throw new Error();
+const blob=await response.blob();
+const objectURL=URL.createObjectURL(blob);
+const link=document.createElement("a");
+link.href=objectURL;
+link.download=filename;
+document.body.appendChild(link);
+link.click();
+link.remove();
+setTimeout(()=>URL.revokeObjectURL(objectURL),2000);
+button.textContent="Downloaded ✓";
+}catch{
+window.open(url,"_blank","noopener,noreferrer");
+button.textContent="Open image ↗";
+}finally{
+button.disabled=false;
+}
+});
+</script>
+</body>
+</html>
